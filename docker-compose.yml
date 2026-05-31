@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-sk-or-v1-demo-key}
+      - DATABASE_URL=sqlite:///./kanban.db
+      - JWT_SECRET=dev-secret-change-in-production
+      - DEBUG=true
+    volumes:
+      - ./backend:/app/backend
+      - ./kanban.db:/app/kanban.db
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
